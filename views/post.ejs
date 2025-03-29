@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>linuskang.au | <%= title %></title>
+    <!-- Include Prism.js CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/themes/prism-tomorrow.css" rel="stylesheet" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        article {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Code block styling */
+        pre {
+            background-color: #282c34;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin-top: 20px;
+            font-size: 11px;
+            line-height: 1.5;
+            border: 2px solid #ddd;
+        }
+
+        code {
+            font-family: 'Courier New', monospace;
+            font-size: 11x;
+        }
+
+        /* Links inside code blocks */
+        pre a {
+            color: #61dafb;
+        }
+
+        pre a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+    <article>
+        <h1><%= title %></h1>
+        <p><strong>Author:</strong> <%= author %></p>
+        <p><strong>Date:</strong> <%= date %></p>
+        <p><strong>Tags:</strong> <%= tags.length > 0 ? tags.join(", ") : "None" %></p>
+        <hr>
+        <!-- Use <%- %> to render the raw HTML content from markdown -->
+        <div><%- content %></div>
+
+        <p><a href="/">← Back to Blog</a></p>
+    </article>
+
+    <!-- Include Prism.js JS -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/prism.js"></script>
+</body>
+</html>
