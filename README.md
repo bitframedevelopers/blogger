@@ -18,11 +18,9 @@ git clone https://github.com/bitframedevelopers/blogger.git
 Your new added files structure should look like this, with ``.env`` and ``posts/``:
 ```
 blogger/
-├── node_modules/
 ├── src/
 |   ├── posts/
-├── .env
-├── server.log
+└──.env
 ```
 
 4. Your ``.env`` file should have the following structure:
