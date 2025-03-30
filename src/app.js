@@ -5,6 +5,7 @@ const { logger } = require('./utils/winston');
 const log = logger();
 dotenv.config();
 const app = express();
+const v = "v1.0.0"
 
 app.use((req, res, next) => {
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
@@ -24,6 +25,6 @@ app.use((req, res, next) => {
 });
 
 app.listen(process.env.port, "0.0.0.0", () => {
-    log.info(`Thanks for using Blogger! Made with ❤️   by bit-frame`);
-    log.info(`Server Started | Version ${process.env.version} | Access at 0.0.0.0:${process.env.port}`);
+    log.info(`Thanks for using Blogger! Made with ❤️ by bit-frame`);
+    log.info(`Server Started | Version ${v} | Access at 0.0.0.0:${process.env.port}`);
 });
