@@ -19,7 +19,7 @@ Your new added files structure should look like this, with ``.env`` and ``posts/
 ```
 blogger/
 ├── src/
-|   ├── posts/
+|   └── posts/
 └──.env
 ```
 
