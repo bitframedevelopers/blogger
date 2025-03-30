@@ -8,7 +8,7 @@ To use Blogger, you will need the following installed:
 
 1. To start using blogger, clone this repository using
 ```
-git clone https://github.com/bitframedevelopers/blog.git
+git clone https://github.com/bitframedevelopers/blogger.git
 ```
 
 2. Next, you will need to install all the libaries required using ``npm install``
