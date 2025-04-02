@@ -6,12 +6,12 @@ const log = logger();
 dotenv.config();
 const app = express();
 const v = "alphadev-1.0.0"
-const { insertUser } = require('./utils/queries');
+const { insertUser, deleteUser, alterUser, getUser } = require('./utils/queries');
 const env = process.env;
 
 app.use((req, res, next) => {
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    log.info(`Incoming request from: ${ip} - ${req.method} ${req.url}`);
+    log.info(`[client-ip] Incoming request from: ${ip} - ${req.method} ${req.url}`);
     next();
 });
 
@@ -28,19 +28,9 @@ app.use((req, res, next) => {
     res.status(404).send('404 Not Found');
 });
 
-insertUser(env.root_account_username, env.root_account_email, env.root_account_password)
-.then((result) => {
-    if (result.message === 'Account already exists') {
-        log.info('Root user already initialized.');
-    } else {
-        log.info('Root user initialized');
-    }
-})
-.catch((err) => {
-    log.error('Error initializing root user:', err);
-});
-
 app.listen(process.env.port, "0.0.0.0", () => {
     log.info(`Thanks for using Blogger! Made with ❤️ by bit-frame`);
-    log.info(`Server Version ${v} | Access at 0.0.0.0:${process.env.port}`);
+    log.info(`Server Version: ${v} | Access at 0.0.0.0:${process.env.port}`);
+    insertUser(env.root_account_username, env.root_account_email, env.root_account_password, 'admin');
+    getUser(null, 'linuskang09+blogger@gmail.com').then(console.log);
 });

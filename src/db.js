@@ -13,10 +13,9 @@ async function dbManager() {
             password: env.database_password,
             database: env.database_name,
         });
-        log.info('Connected to Blogger database');
         return db;
     } catch (err) {
-        log.error('Database connection failed: ' + err);
+        log.error('[src/db.js] Database connection failed: ' + err);
         throw err;
     }
 }
