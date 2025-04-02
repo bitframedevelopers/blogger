@@ -5,7 +5,7 @@ const { logger } = require('./utils/winston');
 const log = logger();
 dotenv.config();
 const app = express();
-const v = "v1.0.0"
+const v = "alphadev-1.0.0"
 
 app.use((req, res, next) => {
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
