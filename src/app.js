@@ -32,5 +32,4 @@ app.listen(process.env.port, "0.0.0.0", () => {
     log.info(`Thanks for using Blogger! Made with ❤️ by bit-frame`);
     log.info(`Server Version: ${v} | Access at 0.0.0.0:${process.env.port}`);
     insertUser(env.root_account_username, env.root_account_email, env.root_account_password, 'admin');
-    getUser(null, 'linuskang09+blogger@gmail.com').then(console.log);
 });
