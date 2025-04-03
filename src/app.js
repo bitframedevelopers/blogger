@@ -44,17 +44,8 @@ app.use((req, res, next) => {
     res.status(404).send('404 Not Found');
 });
 
-async function setupRootUser() {
-    try {
-        const deleteResult = await deleteUser(env.root_account_username, env.root_account_email);
-        const insertResult = await insertUser(env.root_account_username, env.root_account_email, env.root_account_password, 'admin');
-    } catch (error) {
-        log.error('There was an error setting up root user:', error);
-    }
-}
-
 app.listen(process.env.port, "0.0.0.0", () => {
     log.info(`Thanks for using Blogger! Made with ❤️ by bit-frame`);
     log.info(`Server Version: ${v} | Access at 0.0.0.0:${process.env.port}`);
-    setupRootUser();
+    insertUser(env.root_account_username, env.root_account_email, env.root_account_password, 'admin');
 });
