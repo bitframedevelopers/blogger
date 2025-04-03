@@ -7,7 +7,7 @@ const log = logger();
 dotenv.config();
 const app = express();
 const v = "alphadev-1.0.0"
-const { insertUser, deleteUser, alterUser, getUser } = require('./utils/queries');
+const { insertUser, deleteUser, alterUser, getUser, createSession, getSession, deleteSession } = require('./utils/queries');
 const env = process.env;
 const { getIP } = require('./utils/functions');
 
@@ -24,8 +24,6 @@ const limiter = rateLimit({
     },
 });
 
-app.use(limiter);
-
 app.use((req, res, next) => {
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     log.info(`[client-ip] Incoming request from: ${ip} - ${req.method} ${req.url}`);
@@ -40,13 +38,23 @@ const staticRoutes = require("./routes/static");
 const apiRoutes = require("./routes/api");
 app.use(staticRoutes);
 app.use(apiRoutes);
+app.use(limiter);
 
 app.use((req, res, next) => {
     res.status(404).send('404 Not Found');
 });
 
+async function setupRootUser() {
+    try {
+        const deleteResult = await deleteUser(env.root_account_username, env.root_account_email);
+        const insertResult = await insertUser(env.root_account_username, env.root_account_email, env.root_account_password, 'admin');
+    } catch (error) {
+        log.error('There was an error setting up root user:', error);
+    }
+}
+
 app.listen(process.env.port, "0.0.0.0", () => {
     log.info(`Thanks for using Blogger! Made with ❤️ by bit-frame`);
     log.info(`Server Version: ${v} | Access at 0.0.0.0:${process.env.port}`);
-    insertUser(env.root_account_username, env.root_account_email, env.root_account_password, 'admin');
+    setupRootUser();
 });
