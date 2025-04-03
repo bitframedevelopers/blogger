@@ -1,6 +1,7 @@
 const express = require("express");
 const { getPosts, getPost } = require("../utils/posts");
 const { marked } = require("marked");
+const path = require("path");
 
 const router = express.Router();
 
@@ -20,6 +21,10 @@ router.get("/post/:slug", (req, res) => {
 router.get("/", (req, res) => {
     const posts = getPosts();
     res.render("index", { posts });
+});
+
+router.get("/login", (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'views', 'login.html'));
 });
 
 module.exports = router;
