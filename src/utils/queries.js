@@ -118,4 +118,62 @@ async function getUser(username, email) {
     };
 }
 
-module.exports = { insertUser, deleteUser, alterUser, getUser };
+async function createSession(userId, username, sessionId, expiryDays = 7) {
+    const db = await databaseManager();
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + expiryDays); // Set expiry
+
+    await db.execute(
+        'INSERT INTO sessions (userid, username, session_id, expires_at) VALUES (?, ?, ?, ?)',
+        [userId, username, sessionId, expiresAt]
+    );
+
+    log.info(`[src/utils/queries.js] Session created for '${username}', expires at ${expiresAt}.`);
+    return { message: 'Session created', sessionId, expiresAt };
+}
+
+async function getSession(sessionId) {
+    const db = await databaseManager();
+    const [sessions] = await db.execute(
+        'SELECT * FROM sessions WHERE session_id = ?',
+        [sessionId]
+    );
+
+    if (sessions.length === 0) {
+        log.warn(`[src/utils/queries.js] Session '${sessionId}' not found.`);
+        return { message: 'Session not found' };
+    }
+
+    return sessions[0];
+}
+
+async function deleteSession(sessionId) {
+    const db = await databaseManager();
+    const [result] = await db.execute(
+        'DELETE FROM sessions WHERE session_id = ?',
+        [sessionId]
+    );
+
+    if (result.affectedRows > 0) {
+        log.info(`[src/utils/queries.js] Session '${sessionId}' deleted.`);
+        return { message: 'Session deleted' };
+    } else {
+        log.warn(`[src/utils/queries.js] Session '${sessionId}' not found.`);
+        return { message: 'Session not found' };
+    }
+}
+
+async function deleteExpiredSessions() {
+    const db = await databaseManager();
+    const [result] = await db.execute(
+        'DELETE FROM sessions WHERE expires_at < NOW()'
+    );
+
+    if (result.affectedRows > 0) {
+        log.info(`[src/utils/queries.js] ${result.affectedRows} expired sessions deleted.`);
+    }
+}
+
+setInterval(deleteExpiredSessions, 10000);
+
+module.exports = { insertUser, deleteUser, alterUser, getUser, createSession, deleteSession, getSession };
