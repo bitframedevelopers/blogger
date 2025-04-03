@@ -13,6 +13,7 @@
     "dotenv": "^16.4.7",
     "ejs": "^3.1.10",
     "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
     "fs": "^0.0.1-security",
     "gray-matter": "^4.0.3",
     "luxon": "^3.6.0",
