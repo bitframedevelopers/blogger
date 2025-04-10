@@ -38,11 +38,13 @@ app.use(express.static("public"));
 const staticRoutes = require("./routes/pages");
 const apiRoutes = require("./routes/api");
 const srcRoutes = require("./routes/src");
+const authRoutes = require("./routes/auth");
 app.use(cors());
 app.use(express.json());
 app.use(staticRoutes);
 app.use('/v1', apiRoutes);
 app.use('/src', srcRoutes);
+app.use('/account', authRoutes);
 app.use(limiter);
 
 app.use((req, res, next) => {

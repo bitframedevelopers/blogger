@@ -21,37 +21,34 @@ form.addEventListener("submit", async (e) => {
   messageDiv.textContent = "";
   loginBtn.disabled = true;
   loginBtn.textContent = "Logging in...";
-
   const username = form.username.value.trim();
   const password = form.password.value;
-
   try {
-    const res = await fetch("/api/login", {
+    const res = await fetch("/account/auth", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({ username, password })
     });
-
     const data = await res.json();
-
-    if (data.success) {
-      messageDiv.textContent = data.message || "Logged in successfully!";
+    if (data.message === "Authentication successful") {
+      messageDiv.textContent = "Logged in successfully!";
       messageDiv.className = "message success";
-      setTimeout(() => {
-        window.location.href = "/dashboard";
-      }, 1200);
+      console.log("Login successful:", data);
+      console.log("Session ID:", data.sessionId);
+      console.log("Expires at:", data.expiresAt);
+      //setTimeout(() => {
+      //  window.location.href = "/dashboard";  // Redirect to the dashboard after success
+      //}, 1200);
     } else {
       messageDiv.textContent = data.message || "Login failed.";
       messageDiv.className = "message error";
     }
-
   } catch (err) {
     messageDiv.textContent = "Please try again later.";
     messageDiv.className = "message error";
   }
-
   loginBtn.disabled = false;
   loginBtn.textContent = "Login";
 });
