@@ -9,86 +9,108 @@
   <style>
     :root {
       --bg: #121212;
-      --card: #1e1e1e;
+      --card-bg: #1e1e1e;
       --text: #ffffff;
-      --subtle: #aaaaaa;
-      --accent: #ffffff;
+      --subtle: #b0b0b0;
+      --accent: #60a5fa; /* Light blue accent */
       --border-radius: 12px;
-      --shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      --shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      --hover-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
     }
 
     * {
       box-sizing: border-box;
+      margin: 0;
     }
 
     body {
-      margin: 0;
       font-family: 'Segoe UI', Roboto, sans-serif;
       background-color: var(--bg);
       color: var(--text);
-      max-width: 900px;
+      max-width: 1000px;
       margin: 0 auto;
-      padding: 32px 16px;
+      padding: 40px 20px;
+      line-height: 1.8;
     }
 
     h1 {
-      font-size: 2rem;
-      font-weight: 600;
-      margin-bottom: 24px;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 32px;
       color: var(--text);
+      text-align: center;
     }
 
     a {
       color: var(--accent);
       text-decoration: none;
-      transition: opacity 0.2s ease;
+      transition: all 0.3s ease;
+      font-weight: 500;
     }
 
     a:hover {
       opacity: 0.8;
+      transform: translateY(-2px);
     }
 
     .posts {
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 32px;
     }
 
     article {
-      background-color: var(--card);
+      background-color: var(--card-bg);
       border-radius: var(--border-radius);
-      padding: 24px;
+      padding: 28px;
       box-shadow: var(--shadow);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      transition: all 0.3s ease;
     }
 
     article:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+      transform: translateY(-6px);
+      box-shadow: var(--hover-shadow);
     }
 
     article h2 {
-      margin: 0 0 8px;
-      font-size: 1.4rem;
+      margin-bottom: 12px;
+      font-size: 1.8rem;
       font-weight: 600;
       color: var(--text);
     }
 
     .date {
-      font-size: 0.9rem;
+      font-size: 1rem;
       color: var(--subtle);
       margin-bottom: 16px;
     }
 
     .preview {
-      font-size: 1rem;
-      color: #e0e0e0;
+      font-size: 1.1rem;
+      color: #d1d1d1;
+      margin-bottom: 20px;
     }
+
+    footer {
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--subtle);
+      margin-top: 40px;
+    }
+
+    footer p {
+      margin-bottom: 10px;
+    }
+
+    footer a {
+      color: var(--accent);
+    }
+
   </style>
 </head>
 <script src="/src/credit.js"></script>
 <body>
-  <h1>Blog</h1>
+  <h1 id="blog-name">Blog</h1>
   <div class="posts">
     <% posts.forEach(post => { %>
       <article>
@@ -98,8 +120,25 @@
       </article>
     <% }); %>
   </div>
+  <footer>
+    <p>This site is powered by <a href="https://github.com/linuskangsoftware/blogger" target="_blank">Blogger</a></p>
+  </footer>
 </body>
 <script>
+    async function fetchBlogName() {
+      try {
+        const res = await fetch("/v1/name", {
+          method: "GET"
+        });
+        const data = await res.json();
+        const loginTitle = document.getElementById("blog-name");
+        loginTitle.textContent = `${data.name}`;
+      } catch (err) {
+        console.error("Error fetching blog name:", err);
+      }
+    }
+    fetchBlogName();
+
   async function checkSessionToken(sessionId) {
     try {
       const res = await fetch(`/account/session?sessionId=${sessionId}`, {

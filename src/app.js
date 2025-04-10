@@ -62,5 +62,4 @@ app.listen(process.env.port, "0.0.0.0", () => {
     log.info(`Thanks for using Blogger! Made with ❤️ by Linus Kang`);
     log.info(`Version: ${v.version} build ${v.build}`);
     log.info(`Blogger is ready on port ${process.env.port}`);
-    insertUser(env.root_account_username, env.root_account_email, env.root_account_password, 'admin');
 });

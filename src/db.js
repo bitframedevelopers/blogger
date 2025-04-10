@@ -12,6 +12,9 @@ async function dbManager() {
             user: env.database_user,
             password: env.database_password,
             database: env.database_name,
+            waitForConnections: true,
+            connectionLimit: 10,
+            queueLimit: 0 
         });
         return db;
     } catch (err) {

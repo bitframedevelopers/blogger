@@ -1,81 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blogger | <%= title %></title>
     <link href="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/themes/prism-tomorrow.css" rel="stylesheet" />
     <style>
+        /* Global Styles */
         body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f9f9f9;
-        }
-
-        h1 {
-            color: #333;
-        }
-
-        a {
-            text-decoration: none;
-            color: #007bff;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        ul {
-            list-style-type: none;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #1e1e1e;
+            color: #f1f1f1;
+            margin: 0;
             padding: 0;
+            line-height: 1.6;
         }
 
+        /* Container for the page */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: #2c2c2c;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            color: #ecf0f1;
+            margin: 0;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            color: #95a5a6;
+            margin-top: 10px;
+        }
+
+        /* Metadata Section */
+        .metadata {
+            font-size: 1rem;
+            color: #95a5a6;
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .metadata span {
+            font-weight: bold;
+        }
+
+        /* Tags Section */
+        .tags {
+            display: inline-block;
+            padding: 5px 15px;
+            background-color: #3498db;
+            color: #fff;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        /* Content Section */
         article {
-            background: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 50px;
         }
 
+        article p {
+            font-size: 1.125rem;
+            margin-bottom: 20px;
+            line-height: 1.8;
+            color: #ecf0f1;
+        }
+
+        /* Code Block Styles */
         pre {
-            background-color: #282c34;
-            padding: 15px;
-            border-radius: 5px;
+            background-color: #2d3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 10px;
             overflow-x: auto;
-            margin-top: 20px;
-            font-size: 11px;
-            line-height: 1.5;
-            border: 2px solid #ddd;
+            font-size: 1rem;
+            margin-top: 30px;
         }
 
         code {
             font-family: 'Courier New', monospace;
-            font-size: 11x;
         }
 
         pre a {
-            color: #61dafb;
+            color: #3498db;
         }
 
         pre a:hover {
             text-decoration: underline;
         }
 
+        /* Back to Blog Link */
+        .back-link {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 1.2rem;
+            color: #3498db;
+        }
+
+        .back-link a {
+            text-decoration: none;
+            color: inherit;
+            font-weight: bold;
+        }
+
+        .back-link a:hover {
+            color: #1abc9c;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            padding: 20px;
+            background-color: #34495e;
+            color: #ecf0f1;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        /* PrismJS Syntax Highlighting */
+        pre[class*="language-"] {
+            font-size: 1rem;
+            line-height: 1.6;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 30px 0;
+        }
+
     </style>
 </head>
+
 <body>
-    <article>
-        <h1><%= title %></h1>
-        <p><strong>Author:</strong> <%= author %></p>
-        <p><strong>Date:</strong> <%= date %></p>
-        <p><strong>Tags:</strong> <%= tags.length > 0 ? tags.join(", ") : "None" %></p>
-        <hr>
-        <div><%- content %></div>
-        <p><a href="/">← Back to Blog</a></p>
-    </article>
+    <div class="container">
+        <!-- Header Section -->
+        <header>
+            <h1><%= title %></h1>
+        </header>
+
+        <!-- Post Article Section -->
+        <article>
+            <!-- Post Metadata -->
+            <div class="metadata">
+                <span><strong>Author:</strong> <%= author %></span>
+                <span><strong>Date:</strong> <%= date %></span>
+            </div>
+
+            <!-- Tags Section -->
+            <div class="tags">
+                <strong>Tags:</strong> <%= tags.length > 0 ? tags.join(", ") : "None" %>
+            </div>
+
+            <hr>
+
+            <!-- Post Content -->
+            <div><%- content %></div>
+
+            <!-- Back to Blog Link -->
+            <div class="back-link">
+                <a href="/">← Back to Blog</a>
+            </div>
+        </article>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2025 Blogger. All rights reserved.</p>
+        </footer>
+    </div>
+
     <script src="/src/credit.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/prism.js"></script>
 </body>
+
 </html>
