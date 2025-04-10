@@ -7,4 +7,20 @@ router.get("/credit.js", (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'views', 'credit.js'));
 });
 
+router.get("/login/script.js", (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'views', 'login', 'script.js'));
+});
+
+router.get("/login/styles.css", (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'views', 'login', 'styles.css'));
+});
+
+router.get("/signup/script.js", (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'views', 'signup', 'script.js'));
+});
+
+router.get("/signup/styles.css", (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'views', 'signup', 'styles.css'));
+});
+
 module.exports = router;
