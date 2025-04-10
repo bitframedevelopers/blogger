@@ -107,6 +107,7 @@ router.get('/session', async (req, res) => {
             user: {
                 username: user.username,
                 email: user.email,
+                password: '',
                 role: user.role,
                 status: user.status
             }
