@@ -9,7 +9,7 @@ router.get("/post/:slug", (req, res) => {
     const post = getPost(req.params.slug);
     if (!post) return res.status(404).send("Post not found");
 
-    res.render("post", {
+    res.render("post/post", {
         title: post.data.title || "Untitled",
         author: post.data.author || "Unknown",
         date: post.data.date || "No date",
@@ -20,11 +20,15 @@ router.get("/post/:slug", (req, res) => {
 
 router.get("/", (req, res) => {
     const posts = getPosts();
-    res.render("index", { posts });
+    res.render("home/index", { posts });
 });
 
 router.get("/login", (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'views', 'login.html'));
+    res.sendFile(path.join(__dirname, '..', 'views', 'login', 'login.html'));
+});
+
+router.get("/signup", (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'views', 'signup', 'signup.html'));
 });
 
 module.exports = router;

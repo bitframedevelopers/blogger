@@ -1,0 +1,1 @@
+console.log("This site uses blogger as their blogging framework!\nFind out more here! https://github.com/linuskangsoftware/blogger")

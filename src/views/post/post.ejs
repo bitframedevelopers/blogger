@@ -39,7 +39,6 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        /* Code block styling */
         pre {
             background-color: #282c34;
             padding: 15px;
@@ -56,7 +55,6 @@
             font-size: 11x;
         }
 
-        /* Links inside code blocks */
         pre a {
             color: #61dafb;
         }
@@ -74,13 +72,10 @@
         <p><strong>Date:</strong> <%= date %></p>
         <p><strong>Tags:</strong> <%= tags.length > 0 ? tags.join(", ") : "None" %></p>
         <hr>
-        <!-- Use <%- %> to render the raw HTML content from markdown -->
         <div><%- content %></div>
-
         <p><a href="/">← Back to Blog</a></p>
     </article>
-
-    <!-- Include Prism.js JS -->
+    <script src="/src/credit.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/prism.js"></script>
 </body>
 </html>

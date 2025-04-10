@@ -10,6 +10,7 @@ const v = "alphadev-1.0.0"
 const { insertUser, deleteUser, alterUser, getUser, createSession, getSession, deleteSession } = require('./utils/queries');
 const env = process.env;
 const { getIP } = require('./utils/functions');
+const cors = require('cors');
 
 const limiter = rateLimit({
     windowMs: 10 * 1000,
@@ -34,10 +35,14 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static("public"));
 
-const staticRoutes = require("./routes/static");
+const staticRoutes = require("./routes/pages");
 const apiRoutes = require("./routes/api");
+const srcRoutes = require("./routes/src");
+app.use(cors());
+app.use(express.json());
 app.use(staticRoutes);
-app.use(apiRoutes);
+app.use('/v1', apiRoutes);
+app.use('/src', srcRoutes);
 app.use(limiter);
 
 app.use((req, res, next) => {
