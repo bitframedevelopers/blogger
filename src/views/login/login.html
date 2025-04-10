@@ -29,6 +29,79 @@
     </div>
   </div>
   <script src="/src/credit.js"></script>
-  <script src="/src/login/script.js"></script>
+  <script>
+      async function fetchBlogName() {
+      try {
+        const res = await fetch("/v1/name", {
+          method: "GET"
+        });
+        const data = await res.json();
+        const loginTitle = document.getElementById("loginTitle");
+        loginTitle.textContent = `Login to ${data.name}`;
+      } catch (err) {
+        console.error("Error fetching blog name:", err);
+      }
+    }
+    fetchBlogName();
+
+    const form = document.getElementById("loginForm");
+    const messageDiv = document.getElementById("loginMessage");
+    const loginBtn = document.getElementById("loginBtn");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      messageDiv.textContent = "";
+      loginBtn.disabled = true;
+      loginBtn.textContent = "Logging in...";
+      const username = form.username.value.trim();
+      const password = form.password.value;
+      try {
+        const res = await fetch("/account/auth", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+        if (data.message === "Authentication successful") {
+          messageDiv.textContent = "Logged in successfully!";
+          messageDiv.className = "message success";
+          console.log("Login successful:", data);
+          console.log("Session ID:", data.sessionId);
+          console.log("Expires at:", data.expiresAt);
+          //setTimeout(() => {
+          //  window.location.href = "/dashboard";  // Redirect to the dashboard after success
+          //}, 1200);
+        } else {
+          messageDiv.textContent = data.message || "Login failed.";
+          messageDiv.className = "message error";
+        }
+      } catch (err) {
+        messageDiv.textContent = "An internal error occurred. Please try again later.";
+        console.error("Error during login:", err);
+        messageDiv.className = "message error";
+      }
+      loginBtn.disabled = false;
+      loginBtn.textContent = "Login";
+    });
+    async function checkSessionToken(sessionId) {
+      try {
+          const res = await fetch(`/account/session?sessionId=${sessionId}`, {
+              method: 'GET',
+          });
+          const data = await res.json();
+          if (data.message === 'Session is valid') {
+              console.log('You are currently authorised as:', data.user.username);
+          } else {
+              console.log('You are currently authorised as: guest');
+          }
+      } catch (err) {
+          console.error('An internal server error occured:', err);
+      }
+    }
+    const sessionId = 'b4a8b21e-9870-4664-8119-0fab2c5d430f';
+    checkSessionToken(sessionId);
+  </script>
 </body>
 </html>

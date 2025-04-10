@@ -59,7 +59,8 @@ app.use((err, req, res, next) => {
 
 
 app.listen(process.env.port, "0.0.0.0", () => {
-    log.info(`Thanks for using Blogger! Made with ❤️ by bit-frame`);
-    log.info(`Blogger Version: ${v.version} Build ${v.build} | Access at 0.0.0.0:${process.env.port}`);
+    log.info(`Thanks for using Blogger! Made with ❤️ by Linus Kang`);
+    log.info(`Version: ${v.version} build ${v.build}`);
+    log.info(`Blogger is ready on port ${process.env.port}`);
     insertUser(env.root_account_username, env.root_account_email, env.root_account_password, 'admin');
 });

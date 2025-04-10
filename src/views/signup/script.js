@@ -32,7 +32,7 @@ async function fetchBlogName() {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({ usernames, password })
       });
 
       const data = await res.json();
