@@ -93,6 +93,7 @@
           const data = await res.json();
           if (data.message === 'Session is valid') {
               console.log('You are currently authorised as:', data.user.username);
+              window.location.href = "/";
           } else {
               console.log('You are currently authorised as: guest');
           }

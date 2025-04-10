@@ -3,51 +3,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f9f9f9;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Blog</title>
+  <style>
+    :root {
+      --bg: #121212;
+      --card: #1e1e1e;
+      --text: #ffffff;
+      --subtle: #aaaaaa;
+      --accent: #ffffff;
+      --border-radius: 12px;
+      --shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
 
-        h1 {
-            color: #333;
-        }
+    * {
+      box-sizing: border-box;
+    }
 
-        a {
-            text-decoration: none;
-            color: #007bff;
-        }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 32px 16px;
+    }
 
-        a:hover {
-            text-decoration: underline;
-        }
+    h1 {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 24px;
+      color: var(--text);
+    }
 
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+    }
 
-        article {
-            background: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-    </style>
+    a:hover {
+      opacity: 0.8;
+    }
+
+    .posts {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    article {
+      background-color: var(--card);
+      border-radius: var(--border-radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    article:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    }
+
+    article h2 {
+      margin: 0 0 8px;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .date {
+      font-size: 0.9rem;
+      color: var(--subtle);
+      margin-bottom: 16px;
+    }
+
+    .preview {
+      font-size: 1rem;
+      color: #e0e0e0;
+    }
+  </style>
 </head>
 <script src="/src/credit.js"></script>
 <body>
-    <h1>Blog</h1>
-    <ul>
-        <% posts.forEach(post => { %>
-            <li><a href="/post/<%= post.slug %>"><%= post.title %></a> - <%= post.date %></li>
-        <% }); %>
-    </ul>
+  <h1>Blog</h1>
+  <div class="posts">
+    <% posts.forEach(post => { %>
+      <article>
+        <h2><a href="/post/<%= post.slug %>"><%= post.title %></a></h2>
+        <p class="date"><%= post.date %></p>
+        <p class="preview"><%= post.preview || 'Click to read more...' %></p>
+      </article>
+    <% }); %>
+  </div>
 </body>
+<script>
+  async function checkSessionToken(sessionId) {
+    try {
+      const res = await fetch(`/account/session?sessionId=${sessionId}`, {
+        method: 'GET',
+      });
+      const data = await res.json();
+      if (data.message === 'Session is valid') {
+        console.log('You are currently authorised as:', data.user.username);
+      } else {
+        console.log('You are currently authorised as: guest');
+      }
+    } catch (err) {
+      console.error('An internal server error occurred:', err);
+    }
+  }
+
+  const sessionId = 'b4a8b21e-9870-4664-8119-0fab2c5d430f';
+  checkSessionToken(sessionId);
+</script>
 </html>
