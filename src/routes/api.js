@@ -8,4 +8,8 @@ router.get('/name', (req, res) => {
     res.json({ name: env.blog_name });
 });
 
+router.get('/version', (req, res) => {
+    res.json({ name: env.blog_version });
+});
+
 module.exports = router;

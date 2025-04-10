@@ -6,7 +6,7 @@ const rateLimit = require("express-rate-limit");
 const log = logger();
 dotenv.config();
 const app = express();
-const v = "alphadev-1.0.0"
+const v = require('./v.json');
 const { insertUser, deleteUser, alterUser, getUser, createSession, getSession, deleteSession } = require('./utils/queries');
 const env = process.env;
 const { getIP } = require('./utils/functions');
@@ -49,8 +49,15 @@ app.use((req, res, next) => {
     res.status(404).send('404 Not Found');
 });
 
+app.use((err, req, res, next) => {
+    const clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    log.error(`Client IP: ${clientIp}, Error: ${err.stack}`);
+    res.status(500).send("Internal Server Error. Please try again later.");
+});
+
+
 app.listen(process.env.port, "0.0.0.0", () => {
     log.info(`Thanks for using Blogger! Made with ❤️ by bit-frame`);
-    log.info(`Server Version: ${v} | Access at 0.0.0.0:${process.env.port}`);
+    log.info(`Blogger Version: ${v.version} Build ${v.build} | Access at 0.0.0.0:${process.env.port}`);
     insertUser(env.root_account_username, env.root_account_email, env.root_account_password, 'admin');
 });
