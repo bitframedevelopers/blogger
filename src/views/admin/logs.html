@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Log Viewer</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #e0e0e0;
+      font-family: monospace;
+      padding: 1rem;
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    #logContainer {
+      background: #1e1e1e;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 1rem;
+      max-height: 80vh;
+      overflow-y: scroll;
+      white-space: pre-wrap;
+    }
+    input {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border-radius: 5px;
+      border: 1px solid #555;
+      background-color: #1e1e1e;
+      color: #fff;
+    }
+    .highlight {
+      background-color: #333;
+      border-left: 3px solid #00ffcc;
+      padding-left: 6px;
+    }
+    mark {
+      background-color: #00ffcc;
+      color: #000;
+      padding: 0 2px;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Server Log Viewer</h1>
+  <input type="text" id="search" placeholder="Filter logs... (e.g. /v1/name or IP)" />
+  <div id="logContainer">Loading log file...</div>
+
+  <script>
+    let allLines = [];
+
+    async function loadLog() {
+      try {
+        const response = await fetch('/src/admin/server.log?rootpassword=linuskang');
+        const logText = await response.text();
+        allLines = logText.split('\n').filter(line => line.trim() !== '');
+        const filter = document.getElementById('search').value;
+        displayLogs(allLines, filter);
+      } catch (error) {
+        console.error('Error loading log:', error);
+      }
+    }
+
+    function escapeRegExp(string) {
+      return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
+    function highlightMatch(text, query) {
+      const safeQuery = escapeRegExp(query);
+      const regex = new RegExp(safeQuery, 'gi');
+      return text.replace(regex, match => `<mark>${match}</mark>`);
+    }
+
+    function displayLogs(lines, filter = '') {
+      const logContainer = document.getElementById('logContainer');
+      logContainer.innerHTML = '';
+
+      lines.forEach(line => {
+        const div = document.createElement('div');
+        if (filter && line.toLowerCase().includes(filter.toLowerCase())) {
+          div.className = 'highlight';
+          div.innerHTML = highlightMatch(line, filter);
+        } else if (!filter) {
+          div.textContent = line;
+        } else {
+          return;
+        }
+        logContainer.appendChild(div);
+      });
+
+      logContainer.scrollTop = logContainer.scrollHeight;
+    }
+
+    document.getElementById('search').addEventListener('input', (e) => {
+      const filter = e.target.value;
+      displayLogs(allLines, filter);
+    });
+
+    loadLog();
+  </script>
+</body>
+</html>
