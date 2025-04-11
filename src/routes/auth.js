@@ -4,6 +4,7 @@ const uuid = require('uuid');
 const databaseManager = require('../db');
 const { logger } = require('../utils/winston');
 const log = logger();
+const { insertUser } = require('../utils/queries');
 
 async function authenticateUser(username, password) {
     const db = await databaseManager();
@@ -36,6 +37,26 @@ async function generateSession(userId, username) {
     log.info(`[src/routes/auth.js] Session created for '${username}', expires at ${expiresAt}.`);
     return { sessionId, expiresAt };
 }
+
+router.post('/create', async (req, res) => {
+    const { username, email, password, role = 'user', status = 'active' } = req.body;
+
+    if (!username || !email || !password) {
+        return res.status(400).json({ message: 'Username, email, and password are required' });
+    }
+
+    try {
+        const result = await insertUser(username, email, password, role, status);
+        if (result.message === 'Account already exists') {
+            return res.status(409).json(result); // Conflict
+        }
+        return res.status(201).json(result); // Created
+    } catch (err) {
+        log.error(`[src/routes/auth.js] Error creating user: ${err.message}`);
+        return res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
 
 router.post('/auth', async (req, res) => {
     const { username, password } = req.body;
