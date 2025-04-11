@@ -31,4 +31,8 @@ router.get("/signup", (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'views', 'signup', 'signup.html'));
 });
 
+router.get("/my/account", (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'views', 'manage', 'account.html'));
+});
+
 module.exports = router;
