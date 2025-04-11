@@ -36,7 +36,11 @@ router.get("/my/account", (req, res) => {
 });
 
 router.get("/admin/logs", (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'views', 'admin', 'logs.html'));
+    res.sendFile(path.join(__dirname, '..', 'views', 'admin', 'logs', 'logs.html'));
+});
+
+router.get("/admin/login", (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'views', 'admin', 'login.html'));
 });
 
 module.exports = router;
