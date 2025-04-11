@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Blog</title>
+  <title>Blogger</title>
   <style>
     :root {
       --bg: #121212;
@@ -106,24 +106,68 @@
       color: var(--accent);
     }
 
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 20px;
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--card-bg);
+    }
+
+    nav a {
+      margin-left: 20px;
+      font-weight: 500;
+      color: var(--accent);
+    }
+
+    nav a:first-child {
+      margin-left: 0;
+    }
+
+    .posts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 32px;
+      margin-top: 20px;
+    }
+
+    h1#blog-name {
+      margin: 0;
+      text-align: left;
+      font-size: 2.2rem;
+    }
   </style>
 </head>
 <script src="/src/credit.js"></script>
 <body>
-  <h1 id="blog-name">Blog</h1>
-  <div class="posts">
-    <% posts.forEach(post => { %>
-      <article>
-        <h2><a href="/post/<%= post.slug %>"><%= post.title %></a></h2>
-        <p class="date"><%= post.date %></p>
-        <p class="preview"><%= post.preview || 'Click to read more...' %></p>
-      </article>
-    <% }); %>
-  </div>
-  <footer>
-    <p>This site is powered by <a href="https://github.com/linuskangsoftware/blogger" target="_blank">Blogger</a></p>
-  </footer>
-</body>
+    <header>
+      <h1 id="blog-name">Blog</h1>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a id="loginbutton" href="/login">Login</a>
+        <a id="myaccount" href="/my/account">My Account</a>
+      </nav>
+    </header>
+  
+    <main>
+      <div class="posts">
+        <% posts.forEach(post => { %>
+          <article>
+            <h2><a href="/post/<%= post.slug %>"><%= post.title %></a></h2>
+            <p class="date"><%= post.date %></p>
+            <p class="preview"><%= post.preview || 'Click to read more...' %></p>
+          </article>
+        <% }); %>
+      </div>
+    </main>
+  
+    <footer>
+      <p>This site is powered by <a href="https://github.com/linuskangsoftware/blogger">Blogger</a></p>
+    </footer>
+  </body>
+  
 <script>
     async function fetchBlogName() {
       try {
@@ -147,15 +191,17 @@
       const data = await res.json();
       if (data.message === 'Session is valid') {
         console.log('You are currently authorised as:', data.user.username);
+        document.getElementById('loginbutton').style.display = 'none';
       } else {
         console.log('You are currently authorised as: guest');
+        document.getElementById('myaccount').style.display = 'none';
       }
     } catch (err) {
       console.error('An internal server error occurred:', err);
     }
   }
 
-  const sessionId = 'b4a8b21e-9870-4664-8119-0fab2c5d430f';
+  const sessionId = localStorage.getItem('sessionId');
   checkSessionToken(sessionId);
 </script>
 </html>

@@ -70,9 +70,10 @@
           console.log("Login successful:", data);
           console.log("Session ID:", data.sessionId);
           console.log("Expires at:", data.expiresAt);
-          //setTimeout(() => {
-          //  window.location.href = "/dashboard";  // Redirect to the dashboard after success
-          //}, 1200);
+          localStorage.setItem("sessionId", data.sessionId);
+          setTimeout(() => {
+            window.location.href = "/";
+          }, 1000);
         } else {
           messageDiv.textContent = data.message || "Login failed.";
           messageDiv.className = "message error";
@@ -96,12 +97,13 @@
               window.location.href = "/";
           } else {
               console.log('You are currently authorised as: guest');
+              localStorage.removeItem("sessionId");
           }
       } catch (err) {
           console.error('An internal server error occured:', err);
       }
     }
-    const sessionId = 'b4a8b21e-9870-4664-8119-0fab2c5d430sf';
+    const sessionId = localStorage.getItem("sessionId");
     checkSessionToken(sessionId);
   </script>
 </body>
